@@ -9,7 +9,7 @@ def get_outliers(key,df):
     print("\n\033[1m", key.title(), "\033[0m")
     #display descriptive statistics
     print("\n\033[1m", 'Descriptive statistics', "\033[0m")
-    print(df.describe().applymap("{0:.2f}".format))
+    print(df.describe().applymap(lambda x: (((str(x).isnumeric()) and f"{x:.2f}") or x )))
     #display column data types
     print("\n\033[1m", 'Column data types', "\033[0m")
     print(df.dtypes)
@@ -20,8 +20,11 @@ def get_outliers(key,df):
     print(numeric_columns)
     #display boxplots of numeric columns
     print("\n\033[1m", 'Boxplot', "\033[0m")
-    df.plot.box(vert=False)
-    plt.show()
+    try:
+        df.plot.box(vert=False)
+        plt.show()    
+    except:
+        print('No numeric data to plot')
     #display outliers of numeric columns
     data_z_score = stats.zscore(df[numeric_columns])
     for col in numeric_columns:        
